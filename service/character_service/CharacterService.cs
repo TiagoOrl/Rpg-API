@@ -12,22 +12,27 @@ namespace first_api.service.character_service
             new Character {Id = 4, Name = "Clara", Class = RpgClass.Mage }
         };
 
-        public List<Character> AddCharacter(Character character)
+        public async Task<List<Character>> AddCharacter(Character character)
         {
             characters.Add(character);
             return characters;
         }
 
-        public List<Character> GetAllCharacters()
+        public async Task<List<Character>> GetAllCharacters()
         {
             return characters;
         }
 
-        public Character GetCharacterById(int id)
+        public async Task<Character> GetCharacterById(int id)
         {
-            return characters.FirstOrDefault(c => {
+            var foundCharacter =  characters.FirstOrDefault(c => {
                 return c.Id == id;
             });
+
+            if (foundCharacter is null) {
+                throw new Exception("Character Not found");
+            }
+            return foundCharacter;
         }
     }
 }

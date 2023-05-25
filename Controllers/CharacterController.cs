@@ -15,19 +15,19 @@ namespace first_api.Controllers
         }
 
         [HttpGet("get-all")]
-        public ActionResult<List<Character>> GetAllChars() 
+        public async Task<ActionResult<List<Character>>> GetAllChars() 
         {
             return Ok(characterService.GetAllCharacters());
         }
 
         [HttpGet("get-single/{id}")]
-        public ActionResult<Character> GetOne(int id) 
+        public async Task<ActionResult<Character>> GetOne(int id) 
         {
             return Ok(characterService.GetCharacterById(id));
         }
 
         [HttpPost]
-        public ActionResult<List<Character>> AddCharacter(Character character) 
+        public async Task<ActionResult<List<Character>>> AddCharacter(Character character) 
         {
             return Ok(characterService.AddCharacter(character));
         }
