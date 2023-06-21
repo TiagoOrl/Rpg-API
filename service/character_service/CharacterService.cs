@@ -1,5 +1,6 @@
-
+using AutoMapper;
 using first_api.models;
+using first_api.DTO.character;
 
 namespace first_api.service.character_service
 {
@@ -12,24 +13,34 @@ namespace first_api.service.character_service
             new Character {Id = 4, Name = "Clara", Class = RpgClass.Mage }
         };
 
-        public async Task<ServiceResponse<List<Character>>> AddCharacter(Character character)
+        private readonly IMapper mapper; 
+
+        public CharacterService(IMapper mapper)
         {
-            var response = new ServiceResponse<List<Character>>();
-            characters.Add(character);
-            response.Data = characters;
+            this.mapper = mapper;
+        }
+
+        public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto addCharacterDto)
+        {
+            var response = new ServiceResponse<List<GetCharacterDto>>();
+            var newCharacter = this.mapper.Map<Character>(addCharacterDto);
+            newCharacter.Id = characters.Max(i => i.Id) + 1;
+            
+            characters.Add(newCharacter);
+            response.Data = characters.Select(c => mapper.Map<GetCharacterDto>(c)).ToList();
             return response;
         }
 
-        public async Task<ServiceResponse<List<Character>>> GetAllCharacters()
+        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
-            var response = new ServiceResponse<List<Character>>();
-            response.Data = characters;
+            var response = new ServiceResponse<List<GetCharacterDto>>();
+            response.Data = characters.Select(c => mapper.Map<GetCharacterDto>(c)).ToList();
             return response;
         }
 
-        public async Task<ServiceResponse<Character>> GetCharacterById(int id)
+        public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
-            ServiceResponse<Character> response = new ServiceResponse<Character>();
+            var response = new ServiceResponse<GetCharacterDto>();
             var foundCharacter =  characters.FirstOrDefault(c => {
                 return c.Id == id;
             });
@@ -40,7 +51,7 @@ namespace first_api.service.character_service
                 return response;
             }
 
-            response.Data = foundCharacter;
+            response.Data = this.mapper.Map<GetCharacterDto>(foundCharacter);
             return response;
         }
     }

@@ -1,12 +1,13 @@
 
+using first_api.DTO.character;
 using first_api.models;
 
 namespace first_api.service.character_service
 {
     public interface ICharacterService
     {
-        Task<ServiceResponse<List<Character>>> GetAllCharacters();
-        Task<ServiceResponse<Character>> GetCharacterById(int id);
-        Task<ServiceResponse<List<Character>>> AddCharacter(Character character);
+        Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
+        Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id);
+        Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto character);
     }
 }
