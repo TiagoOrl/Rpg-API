@@ -54,5 +54,28 @@ namespace first_api.service.character_service
             response.Data = this.mapper.Map<GetCharacterDto>(foundCharacter);
             return response;
         }
+
+        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto characterDto)
+        {
+            var response = new ServiceResponse<GetCharacterDto>();
+            var foundCharacter = characters.Find(c => c.Id == characterDto.Id);
+
+            if (foundCharacter == null)
+            {
+                response.Success = false;
+                response.Message = "character not found";
+                return response;
+            }
+
+            foundCharacter.Name = characterDto.Name;
+            foundCharacter.Class = characterDto.Class;
+            foundCharacter.Strength = characterDto.Strength;
+            foundCharacter.Intelligence = characterDto.Intelligence;
+            foundCharacter.HitPoints = characterDto.HitPoints;
+            foundCharacter.Defense = characterDto.Defense;
+
+            response.Data = mapper.Map<GetCharacterDto>(foundCharacter);
+            return response;
+        }
     }
 }

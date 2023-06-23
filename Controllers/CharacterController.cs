@@ -25,6 +25,11 @@ namespace first_api.Controllers
         [HttpGet("get-single/{id}")]
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetOne(int id) 
         {
+            var body = await characterService.GetCharacterById(id);
+            if (!body.Success)
+            {
+                return NotFound(body);
+            }
             return Ok(await characterService.GetCharacterById(id));
         }
 
@@ -32,6 +37,17 @@ namespace first_api.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto character) 
         {
             return Ok(await characterService.AddCharacter(character));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> UpdateCharacter(UpdateCharacterDto characterDto) 
+        {
+            var body = await characterService.UpdateCharacter(characterDto);
+            if (!body.Success)
+            {
+                return NotFound(body);
+            }
+            return Ok(await characterService.UpdateCharacter(characterDto));
         }
     }
 }
