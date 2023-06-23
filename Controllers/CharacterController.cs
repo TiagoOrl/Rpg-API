@@ -50,7 +50,7 @@ namespace first_api.Controllers
             return Ok(body);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<List<GetCharacterDto>>> DeleteCharacter(int id)
         {
             var bodyResponse = await characterService.DeleteCharacter(id);
