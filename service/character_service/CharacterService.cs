@@ -47,7 +47,7 @@ namespace first_api.service.character_service
 
             if (foundCharacter is null) {
                 response.Success = false;
-                response.Message = "character of id not found";
+                response.Message = $"character of id '{id}' not found";
                 return response;
             }
 
@@ -63,16 +63,21 @@ namespace first_api.service.character_service
             if (foundCharacter == null)
             {
                 response.Success = false;
-                response.Message = "character not found";
+                response.Message = $"character of id '{characterDto.Id}' not found";
                 return response;
             }
 
-            foundCharacter.Name = characterDto.Name;
-            foundCharacter.Class = characterDto.Class;
-            foundCharacter.Strength = characterDto.Strength;
-            foundCharacter.Intelligence = characterDto.Intelligence;
-            foundCharacter.HitPoints = characterDto.HitPoints;
-            foundCharacter.Defense = characterDto.Defense;
+            // copy data from the requestDto to the found character
+            var updatedCharacter = mapper.Map(characterDto, foundCharacter); 
+
+            //equivatent operation to the map above
+            
+            // foundCharacter.Name = characterDto.Name;
+            // foundCharacter.Class = characterDto.Class;
+            // foundCharacter.Strength = characterDto.Strength;
+            // foundCharacter.Intelligence = characterDto.Intelligence;
+            // foundCharacter.HitPoints = characterDto.HitPoints;
+            // foundCharacter.Defense = characterDto.Defense;
 
             response.Data = mapper.Map<GetCharacterDto>(foundCharacter);
             return response;
