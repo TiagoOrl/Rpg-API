@@ -30,7 +30,7 @@ namespace first_api.Controllers
             {
                 return NotFound(body);
             }
-            return Ok(await characterService.GetCharacterById(id));
+            return Ok(body);
         }
 
         [HttpPost]
@@ -47,7 +47,19 @@ namespace first_api.Controllers
             {
                 return NotFound(body);
             }
-            return Ok(await characterService.UpdateCharacter(characterDto));
+            return Ok(body);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<List<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            var bodyResponse = await characterService.DeleteCharacter(id);
+            if (!bodyResponse.Success)
+            {
+                return NotFound(bodyResponse);
+            }
+
+            return Ok(bodyResponse);
         }
     }
 }

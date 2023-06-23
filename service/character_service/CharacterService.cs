@@ -82,5 +82,24 @@ namespace first_api.service.character_service
             response.Data = mapper.Map<GetCharacterDto>(foundCharacter);
             return response;
         }
+
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            var responseBody = new ServiceResponse<List<GetCharacterDto>>();
+            var foundCharacter = characters.FirstOrDefault(c => {
+                return c.Id == id;
+            });
+
+            if (foundCharacter is null) {
+                responseBody.Success = false;
+                responseBody.Message = $"character of id '{id}' not found";
+                return responseBody;
+            }
+
+            characters.Remove(foundCharacter);
+            responseBody.Data = characters.Select(c => mapper.Map<GetCharacterDto>(c)).ToList();
+
+            return responseBody;
+        }
     }
 }
