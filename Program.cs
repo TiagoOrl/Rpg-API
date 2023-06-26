@@ -1,6 +1,6 @@
 global using first_api.service.character_service;
 global using Microsoft.EntityFrameworkCore;
-using first_api.Data;
+global using first_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
