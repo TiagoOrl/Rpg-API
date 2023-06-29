@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using first_api.DTO.character;
+using System.Security.Claims;
 
 namespace first_api.Controllers
 {
@@ -18,11 +19,14 @@ namespace first_api.Controllers
             this.characterService = characterService;
         }
 
-        [AllowAnonymous]
+
         [HttpGet("get-all")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> GetAllChars() 
         {
-            return Ok(await characterService.GetAllCharacters());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => 
+                c.Type == ClaimTypes.NameIdentifier
+            )!.Value);
+            return Ok(await characterService.GetAllCharacters(userId));
         }
 
         [HttpGet("get-single/{id}")]
