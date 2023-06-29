@@ -18,6 +18,7 @@ namespace first_api.Controllers
             this.characterService = characterService;
         }
 
+        [AllowAnonymous]
         [HttpGet("get-all")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> GetAllChars() 
         {
