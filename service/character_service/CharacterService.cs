@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoMapper;
 using first_api.models;
 using first_api.DTO.character;
@@ -17,6 +18,8 @@ namespace first_api.service.character_service
             this.dataContext = dataContext;
         }
 
+        private int GetUserId() => int.Parse(httpAcessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto addCharacterDto)
         {
             var response = new ServiceResponse<List<GetCharacterDto>>();
@@ -29,11 +32,11 @@ namespace first_api.service.character_service
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters(int userId)
+        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             var response = new ServiceResponse<List<GetCharacterDto>>();
             var dbCharacters = await dataContext.Characters
-                .Where(c => c.User!.Id == userId)
+                .Where(c => c.User!.Id == GetUserId())
                 .ToListAsync();
             response.Data = dbCharacters.Select(c => mapper.Map<GetCharacterDto>(c)).ToList();
             return response;

@@ -23,10 +23,7 @@ namespace first_api.Controllers
         [HttpGet("get-all")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> GetAllChars() 
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => 
-                c.Type == ClaimTypes.NameIdentifier
-            )!.Value);
-            return Ok(await characterService.GetAllCharacters(userId));
+            return Ok(await characterService.GetAllCharacters());
         }
 
         [HttpGet("get-single/{id}")]
