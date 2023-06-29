@@ -8,9 +8,11 @@ namespace first_api.service.character_service
     {
         private readonly IMapper mapper; 
         private readonly DataContext dataContext;
+        private readonly IHttpContextAccessor httpAcessor;
 
-        public CharacterService(IMapper mapper, DataContext dataContext)
+        public CharacterService(IMapper mapper, DataContext dataContext, IHttpContextAccessor httpAcessor)
         {
+            this.httpAcessor = httpAcessor;
             this.mapper = mapper;
             this.dataContext = dataContext;
         }
