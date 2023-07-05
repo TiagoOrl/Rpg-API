@@ -54,14 +54,16 @@ namespace first_api.service.character_service
 
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
+            int userId = GetUserId();
+
             var response = new ServiceResponse<GetCharacterDto>();
             var foundCharacter =  await dataContext.Characters.FirstOrDefaultAsync(
-                c => c.Id == id
+                c => c.Id == id && c.User!.Id == userId
             );
 
             if (foundCharacter is null) {
                 response.Success = false;
-                response.Message = $"character of id '{id}' not found";
+                response.Message = $"character of id '{id}' for userId '{userId}' not found";
                 return response;
             }
 
@@ -100,9 +102,10 @@ namespace first_api.service.character_service
 
         public async Task<ServiceResponse<GetCharacterDto>> DeleteCharacter(int id)
         {
+            int userId = GetUserId();
             var responseBody = new ServiceResponse<GetCharacterDto>();
             var foundCharacter = await dataContext.Characters.FirstOrDefaultAsync(
-                c => c.Id == id
+                c => c.Id == id && c.User!.Id == userId
             );
 
             if (foundCharacter is null) {
