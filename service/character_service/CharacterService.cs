@@ -18,25 +18,35 @@ namespace first_api.service.character_service
             this.dataContext = dataContext;
         }
 
+        // gets the user id from the jwt passed in the http request header
         private int GetUserId() => int.Parse(httpAcessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto addCharacterDto)
         {
+            int userId = GetUserId();
             var response = new ServiceResponse<List<GetCharacterDto>>();
             var newCharacter = this.mapper.Map<Character>(addCharacterDto);
+
+            newCharacter.User = await dataContext.Users.FirstOrDefaultAsync(
+                u => u.Id == userId
+            );
 
             dataContext.Characters.Add(newCharacter);
             await dataContext.SaveChangesAsync();
             response.Data = 
-                await dataContext.Characters.Select(c => mapper.Map<GetCharacterDto>(c)).ToListAsync();
+                await dataContext.Characters
+                    .Where(c => c.User!.Id == userId)
+                    .Select(c => mapper.Map<GetCharacterDto>(c)).ToListAsync();
             return response;
         }
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
+            int userId = GetUserId();
+
             var response = new ServiceResponse<List<GetCharacterDto>>();
             var dbCharacters = await dataContext.Characters
-                .Where(c => c.User!.Id == GetUserId())
+                .Where(c => c.User!.Id == userId)
                 .ToListAsync();
             response.Data = dbCharacters.Select(c => mapper.Map<GetCharacterDto>(c)).ToList();
             return response;
