@@ -15,5 +15,6 @@ namespace first_api.models
         public int Intelligence { get; set; } = 10;
         public RpgClass Class { get; set; }
         public User? User { get; set; } = null;
+        public Weapon? Weapon { get; set; } = null;
     }
 }
