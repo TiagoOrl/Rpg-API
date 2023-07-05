@@ -73,13 +73,17 @@ namespace first_api.service.character_service
 
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updateDto)
         {
+            int userId = GetUserId();
+
             var response = new ServiceResponse<GetCharacterDto>();
-            var foundCharacter = dataContext.Characters.FirstOrDefault(c => c.Id == updateDto.Id);
+            var foundCharacter = dataContext.Characters.FirstOrDefault(
+                c => c.Id == updateDto.Id && c.User!.Id == userId
+            );
 
             if (foundCharacter == null)
             {
                 response.Success = false;
-                response.Message = $"character of id '{updateDto.Id}' not found";
+                response.Message = $"character of id '{updateDto.Id}' for userId '{userId}' not found";
                 return response;
             }
 
