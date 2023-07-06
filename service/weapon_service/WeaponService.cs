@@ -55,9 +55,8 @@ namespace first_api.service.weapon_service
             {
                 await dataContext.SaveChangesAsync();
             }
-            catch (DbUpdateException e)
+            catch (Exception e)
             {
-                
                 response.Success = false;
                 response.StatusCode = 500;
                 response.Message = e.Message;
