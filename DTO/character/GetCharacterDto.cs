@@ -1,4 +1,6 @@
 using first_api.models;
+using first_api.DTO.weapon;
+using first_api.DTO.skill;
 
 namespace first_api.DTO.character
 {
@@ -11,5 +13,7 @@ namespace first_api.DTO.character
         public int Defense { get; set; } = 10;
         public int Intelligence { get; set; } = 10;
         public RpgClass Class { get; set; }
+        public GetWeaponDTO? Weapon {get; set;}
+        public List<GetSkillDto>? Skills { get; set; }
     }
 }

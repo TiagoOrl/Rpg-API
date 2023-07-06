@@ -65,5 +65,23 @@ namespace first_api.Controllers
 
             return Ok(bodyResponse);
         }
+
+        [HttpPost("skill")]
+        public async Task<ActionResult<GetCharacterDto>> AddSkillToChar(AddCharSkillDto inputDto)
+        {
+            var bodyResponse = await characterService.AddCharacterSkill(inputDto);
+
+            switch (bodyResponse.StatusCode)
+            {
+                case 422:
+                    return UnprocessableEntity(bodyResponse);
+                case 404:
+                    return NotFound(bodyResponse);
+                case 500:
+                    return StatusCode(500, bodyResponse);
+                default:
+                    return Ok(bodyResponse);
+            }
+        }
     }
 }
